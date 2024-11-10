@@ -1,3 +1,43 @@
+-- mouse template
+function ____ Mouse()
+  if UnitCanAttack("player","mouseover") then 
+      TargetUnit("mouseover");
+      CastSpellByName("_____")
+      TargetUnit("playertarget"); 
+  else 
+      CastSpellByName("_____")
+  end
+end
+
+-- super spicy stuff
+function initFrame()
+  MyFrame.casting = false
+  MyFrame:RegisterEvent("SPELLCAST_START")
+  MyFrame:RegisterEvent("SPELLCAST_STOP")
+  MyFrame:RegisterEvent("SPELLCAST_FAILED")
+  MyFrame:RegisterEvent("SPELLCAST_INTERRUPTED")
+  MyFrame:SetScript("OnEvent", function()
+    if not event then return end
+
+    if event == "SPELLCAST_START" then
+      MyFrame.casting = true
+
+    elseif event == "SPELLCAST_STOP" or event == "SPELLCAST_FAILED" or event == "SPELLCAST_INTERRUPTED" then
+      if not MyFrame.casting then return end
+      MyFrame.casting = false
+    end
+  end)
+end
+if not MyFrame then 
+  MyFrame = CreateFrame("Frame")
+  initFrame() 
+end
+function smartShot(spell)
+  if not MyFrame.casting then
+    Quiver.CastNoClip(spell)
+  end
+end
+
 -- toggle auto shot if outside melee range, otherwise toggle auto attack
 function dynamicAttack() 
     local t='target'
@@ -32,18 +72,6 @@ function serpentStingMouse()
 	else 
 		CastSpellByName("Serpent Sting");
 	end
-end
-
-
--- mouse template
-function ____ Mouse()
-    if UnitCanAttack("player","mouseover") then 
-        TargetUnit("mouseover");
-        CastSpellByName("_____")
-        TargetUnit("playertarget"); 
-    else 
-        CastSpellByName("_____")
-    end
 end
 
 
