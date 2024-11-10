@@ -11,6 +11,7 @@ end
 
 -- super spicy stuff
 function initFrame()
+  MyFrame = CreateFrame("Frame")
   MyFrame.casting = false
   MyFrame:RegisterEvent("SPELLCAST_START")
   MyFrame:RegisterEvent("SPELLCAST_STOP")
@@ -28,12 +29,11 @@ function initFrame()
     end
   end)
 end
-if not MyFrame then 
-  MyFrame = CreateFrame("Frame")
-  initFrame() 
+if not MyFrame then
+  initFrame()
 end
 function smartShot(spell)
-  if not MyFrame.casting then
+  if MyFrame == nil or not MyFrame.casting then
     Quiver.CastNoClip(spell)
   end
 end
